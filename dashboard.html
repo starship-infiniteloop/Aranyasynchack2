@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AranyaSync | Control Center</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js (CDN) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body class="dashboard-body">
+    <!-- UI Layout -->
+    <div class="app-layout">
+        
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar glass-panel">
+            <div class="sidebar-brand">
+                <span class="logo-icon"></span>
+                <span class="logo-text-small">ARANYA<span class="accent-text">SYNC</span></span>
+            </div>
+            
+            <ul class="nav-menu">
+                <li class="nav-item active" data-target="view-overview">
+                    <span class="nav-icon">⛶</span> Dashboard
+                </li>
+                <li class="nav-item" onclick="window.location.href='map.html'">
+                    <span class="nav-icon">🌍</span> Live Map
+                </li>
+                <li class="nav-item" data-target="view-analytics">
+                    <span class="nav-icon">📊</span> Analytics
+                </li>
+                <li class="nav-item" data-target="view-slots">
+                    <span class="nav-icon">🎟️</span> Booking Slots
+                </li>
+                <li class="nav-item" data-target="view-pricing">
+                    <span class="nav-icon">💳</span> Dynamic Pricing
+                </li>
+                <li class="nav-item" data-target="view-vehicles">
+                    <span class="nav-icon">🚙</span> Vehicles
+                </li>
+                <li class="nav-item" data-target="view-wildlife">
+                    <span class="nav-icon">🐅</span> Wildlife Log
+                </li>
+                <li class="nav-item" data-target="view-alerts">
+                    <span class="nav-icon">⚠️</span> Alert System
+                </li>
+                <li class="nav-item" data-target="view-zones">
+                    <span class="nav-icon">🛑</span> Zones
+                </li>
+            </ul>
+            
+            <div class="sidebar-footer">
+                <button class="btn-outline logout-btn" onclick="window.location.href='index.html'">LOGOUT</button>
+            </div>
+        </nav>
+
+        <!-- Main Workspace -->
+        <main class="main-workspace">
+            <!-- Top Navbar -->
+            <header class="top-navbar glass-panel">
+                <div class="search-bar">
+                    <input type="text" placeholder="Search ID, Zone or Vehicle...">
+                </div>
+                
+                <div class="top-controls">
+                    <div class="system-time" id="sysTime">00:00:00</div>
+                    <div class="alert-bell has-notification" id="alertBell">🔔</div>
+                    <div class="user-profile">
+                        <div class="avatar">CMD</div>
+                        <span>ADMIN OPR</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dynamic Views Container -->
+            <div class="views-container">
+                
+                <!-- 1. OVERVIEW VIEW -->
+                <section id="view-overview" class="view-section active">
+                    <h2 class="view-title">SYSTEM OVERVIEW</h2>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card glow-hover">
+                            <div class="stat-icon">🎟️</div>
+                            <div class="stat-info">
+                                <h3>TOTAL BOOKINGS</h3>
+                                <p class="stat-value" id="valBookings">1,204</p>
+                            </div>
+                            <div class="stat-trend positive">+12% TDY</div>
+                        </div>
+                        <div class="stat-card glow-hover">
+                            <div class="stat-icon">🚙</div>
+                            <div class="stat-info">
+                                <h3>ACTIVE VEHICLES</h3>
+                                <p class="stat-value" id="valVehicles">34</p>
+                            </div>
+                            <div class="stat-trend">STABLE</div>
+                        </div>
+                        <div class="stat-card glow-hover alert-state">
+                            <div class="stat-icon">⚠️</div>
+                            <div class="stat-info">
+                                <h3>ACTIVE ALERTS</h3>
+                                <p class="stat-value text-danger" id="valAlerts">3</p>
+                            </div>
+                            <div class="stat-trend danger">ACTION REQ</div>
+                        </div>
+                        <div class="stat-card glow-hover">
+                            <div class="stat-icon">🛑</div>
+                            <div class="stat-info">
+                                <h3>ZONES RESTRICTED</h3>
+                                <p class="stat-value" id="valZones">2 / 8</p>
+                            </div>
+                            <div class="stat-trend warning">WILDLIFE ACTV</div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-widgets">
+                        <!-- Quick Chart Preview -->
+                        <div class="widget glass-panel">
+                            <h3>REAL-TIME CROWD DENSITY</h3>
+                            <div class="chart-container-small">
+                                <canvas id="miniDensityChart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <!-- Recent Activity Log -->
+                        <div class="widget glass-panel">
+                            <h3>SYS_LOG.DAT</h3>
+                            <ul class="activity-log" id="activityLog">
+                                <li class="log-entry warning"><span>[10:42]</span> Zone 3 - Animal Sighting (Tiger)</li>
+                                <li class="log-entry normal"><span>[10:35]</span> Vehicle V-04 Check-in Core Zone</li>
+                                <li class="log-entry danger"><span>[10:15]</span> Overspeed Alert: V-12 (45km/h)</li>
+                                <li class="log-entry normal"><span>[09:50]</span> System backup complete</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. ANALYTICS VIEW -->
+                <section id="view-analytics" class="view-section hidden">
+                    <h2 class="view-title">DATA ANALYTICS MODULE</h2>
+                    <div class="charts-grid">
+                        <div class="chart-box glass-panel glow-hover">
+                            <h3>BOOKING TRENDS (WEEKLY)</h3>
+                            <canvas id="bookingsChart"></canvas>
+                        </div>
+                        <div class="chart-box glass-panel glow-hover">
+                            <h3>REVENUE METRICS</h3>
+                            <canvas id="revenueChart"></canvas>
+                        </div>
+                        <div class="chart-box glass-panel glow-hover full-width">
+                            <h3>ZONE HEATMAP SCALES</h3>
+                            <canvas id="zoneChart"></canvas>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. SLOTS MANAGEMENT -->
+                <section id="view-slots" class="view-section hidden">
+                    <h2 class="view-title">SAFARI SLOTS MANAGER</h2>
+                    <div class="admin-panel glass-panel">
+                        <div class="panel-header">
+                            <h3>CURRENT SCHEDULE</h3>
+                            <button class="btn-primary small">+ NEW SLOT</button>
+                        </div>
+                        <table class="data-table">
+                            <thead>
+                                <tr><th>SLOT ID</th><th>TIME</th><th>ZONE</th><th>CAPACITY</th><th>STATUS</th><th>ACTIONS</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>M-01</td><td>06:00 - 09:00</td><td>Core</td><td>40/50</td><td class="status-ok">OPEN</td><td><button class="btn-action">Edit</button></td></tr>
+                                <tr><td>M-02</td><td>06:30 - 09:30</td><td>Buffer</td><td>50/50</td><td class="status-warn">FULL</td><td><button class="btn-action">Edit</button></td></tr>
+                                <tr><td>A-01</td><td>15:00 - 18:00</td><td>Core</td><td>0/50</td><td class="status-danger">BLOCKED</td><td><button class="btn-action">Edit</button></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- 4. PRICING VIEW -->
+                <section id="view-pricing" class="view-section hidden">
+                    <h2 class="view-title">DYNAMIC PRICING CONTROL</h2>
+                    <div class="pricing-cards">
+                        <div class="pricing-card glass-panel glow-hover">
+                            <h3>BASE TARIFF</h3>
+                            <div class="price-display">₹1,500 <span class="unit">/ person</span></div>
+                            <div class="toggle-group">
+                                <label>Peak Multiplier (1.2x)</label>
+                                <input type="checkbox" checked class="toggle-switch">
+                            </div>
+                        </div>
+                        <div class="pricing-card glass-panel glow-hover">
+                            <h3>FOREIGN TARIFF</h3>
+                            <div class="price-display">₹3,000 <span class="unit">/ person</span></div>
+                            <div class="toggle-group">
+                                <label>Peak Multiplier (1.5x)</label>
+                                <input type="checkbox" checked class="toggle-switch">
+                            </div>
+                        </div>
+                        <div class="manual-override glass-panel">
+                            <h3>MANUAL OVERRIDE</h3>
+                            <div class="input-row">
+                                <input type="number" placeholder="New price..." class="form-input">
+                                <select class="form-input"><option>All Zones</option><option>Core</option></select>
+                                <button class="btn-primary">APPLY</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- 5. VEHICLE MONITORING -->
+                <section id="view-vehicles" class="view-section hidden">
+                    <h2 class="view-title">VEHICLE TELEMETRY</h2>
+                    <div class="admin-panel glass-panel">
+                        <table class="data-table telemetry-table">
+                            <thead>
+                                <tr><th>VEHICLE ID</th><th>SPEED</th><th>LOCATION</th><th>DRIVER</th><th>STATUS</th></tr>
+                            </thead>
+                            <tbody id="vehicleTableBody">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- 6. WILDLIFE LOG -->
+                <section id="view-wildlife" class="view-section hidden">
+                    <h2 class="view-title">WILDLIFE TRACKING LOG</h2>
+                    <div class="wildlife-grid" id="wildlifeGrid">
+                        <!-- Populated iteratively -->
+                        <div class="wildlife-card glass-panel glow-hover">
+                            <div class="animal-img bg-tiger"></div>
+                            <div class="animal-info">
+                                <h3>BENGAL TIGER (T-41)</h3>
+                                <p>Zone: Core 2</p>
+                                <p>Last Seen: 12 mins ago</p>
+                            </div>
+                        </div>
+                        <div class="wildlife-card glass-panel glow-hover">
+                            <div class="animal-img bg-leopard"></div>
+                            <div class="animal-info">
+                                <h3>LEOPARD</h3>
+                                <p>Zone: Buffer South</p>
+                                <p>Last Seen: 45 mins ago</p>
+                            </div>
+                        </div>
+                        <div class="wildlife-card glass-panel glow-hover">
+                            <div class="animal-img bg-ele"></div>
+                            <div class="animal-info">
+                                <h3>ELEPHANT HERD</h3>
+                                <p>Zone: River Bank</p>
+                                <p>Last Seen: 3 hrs ago</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 7. ALERTS SYSTEM -->
+                <section id="view-alerts" class="view-section hidden">
+                    <h2 class="view-title text-danger">EMERGENCY ALERTS MODULE</h2>
+                    <div class="alerts-container">
+                        <div class="alert-box critical glass-panel">
+                            <div class="alert-header">
+                                <span class="alert-icon">🆘</span>
+                                <h3>SOS ACTIVATED - VEHICLE V-09</h3>
+                                <span class="time">Just now</span>
+                            </div>
+                            <p>Driver initiated SOS. Location: Sector 4G. Sending Response Team Alpha.</p>
+                            <button class="btn-danger">ACKNOWLEDGE & DISPATCH</button>
+                        </div>
+                        <div class="alert-box warning glass-panel">
+                            <div class="alert-header">
+                                <span class="alert-icon">⚠️</span>
+                                <h3>OVERSPEED WARNING</h3>
+                                <span class="time">15 mins ago</span>
+                            </div>
+                            <p>Vehicle V-12 exceeded 40km/h in Buffer Zone.</p>
+                            <button class="btn-outline">RESOLVE</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 8. ZONE MANAGEMENT -->
+                <section id="view-zones" class="view-section hidden">
+                    <h2 class="view-title">ZONE CONFIGURATION</h2>
+                    <div class="zones-grid">
+                        <div class="zone-card glass-panel status-ok">
+                            <h3>CORE ZONE NORTH</h3>
+                            <p>Status: <span class="tag green">OPEN</span></p>
+                            <p>Pollution Level: L1 Clean</p>
+                            <button class="btn-action">RESTRICT ENTRY</button>
+                        </div>
+                        <div class="zone-card glass-panel status-danger glow-alert">
+                            <h3>CORE ZONE SOUTH</h3>
+                            <p>Status: <span class="tag red">RESTRICTED</span></p>
+                            <p>Reason: Tiger Cubs Sighted</p>
+                            <button class="btn-action">LIFT RESTRICTION</button>
+                        </div>
+                        <div class="zone-card glass-panel status-warn">
+                            <h3>RIVER BUFFER</h3>
+                            <p>Status: <span class="tag yellow">HEAVY TRAFFIC</span></p>
+                            <p>Pollution Level: L3 Warning (Dust)</p>
+                            <button class="btn-action">MANAGE TRAFFIC</button>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Script -->
+    <script src="js/app.js"></script>
+</body>
+</html>
