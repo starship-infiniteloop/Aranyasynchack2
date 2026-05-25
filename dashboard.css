@@ -283,3 +283,110 @@ h1, h2, h3, h4 {
         width: 100%;
     }
 }
+/* =========================
+   FINAL LAYOUT FIX
+========================= */
+
+.app-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 260px;
+    min-width: 260px;
+    padding: 20px;
+}
+
+/* Main Area */
+.main-workspace {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Navbar */
+.top-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 30px;
+}
+
+/* Main Content */
+.views-container {
+    padding: 30px;
+}
+
+/* Dashboard Cards */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
+}
+
+/* Cards */
+.stat-card {
+    padding: 25px;
+    border-radius: 18px;
+    transition: 0.3s ease;
+}
+
+/* Card Hover */
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 25px rgba(0,255,255,0.15);
+}
+
+/* Icons */
+.stat-icon {
+    font-size: 2rem;
+    margin-bottom: 15px;
+}
+
+/* Values */
+.stat-value {
+    font-size: 2.4rem;
+    margin-top: 10px;
+}
+
+/* Navigation */
+.nav-menu {
+    margin-top: 30px;
+}
+
+.nav-item {
+    padding: 14px 18px;
+    border-radius: 12px;
+    margin-bottom: 10px;
+}
+
+/* Search */
+.search-bar input {
+    width: 320px;
+    max-width: 100%;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+
+    .app-layout {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        min-width: 100%;
+    }
+
+    .top-navbar {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .search-bar input {
+        width: 100%;
+    }
+}
